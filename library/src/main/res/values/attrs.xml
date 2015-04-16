@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CircularProgressView">
+        <attr name="strokeSize" format="dimension"/>
+        <attr name="strokeColor" format="color"/>
+        <attr name="startDrawable" format="color|reference"/>
+        <attr name="progressDrawable" format="color|reference"/>
+        <attr name="endDrawable" format="color|reference"/>
+    </declare-styleable>
+</resources>
