@@ -2,10 +2,9 @@ package me.toxz.circularprogressview.library;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -13,8 +12,6 @@ import android.view.View;
  */
 class Circle extends View {
     private Paint mStrokePaint;
-    private RectF rect;
-    private int pix = 0;
     private float sweepAngle;
 
 
@@ -33,22 +30,7 @@ class Circle extends View {
         mStrokePaint.setStrokeWidth(mCircularProgressView.getStrokeSize());
         mStrokePaint.setStyle(Paint.Style.STROKE);
 
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-        float scarea = width * height;
-        pix = (int) Math.sqrt(scarea * 0.0217);
-
-        mStrokePaint.setAntiAlias(true);
-        mStrokePaint.setStyle(Paint.Style.STROKE);
-        mStrokePaint.setColor(Color.rgb(0, 161, 234));  //Edit this to change progress arc color.
-        mStrokePaint.setStrokeWidth(7);
-
-        float startx = (float) (pix * 0.05);
-        float endx = (float) (pix * 0.95);
-        float starty = (float) (pix * 0.05);
-        float endy = (float) (pix * 0.95);
-        rect = new RectF(startx, starty, endx, endy);
+        rect = new RectF();
 
     }
 
@@ -66,8 +48,11 @@ class Circle extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int desiredWidth = pix;
-        int desiredHeight = pix;
+        Log.i("Circle", "width: " + getWidth() + ", height: " + getHeight());
+        Log.i("Circle", "widthMeasureSpec: " + widthMeasureSpec + ", heightMeasureSpec: " + heightMeasureSpec);
+
+        int desiredWidth = 0;
+        int desiredHeight = 0;
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
@@ -95,12 +80,16 @@ class Circle extends View {
         }
 
 
-        setMeasuredDimension(width, height);
+        setMeasuredDimension(parentWidth, parentHeight);
     }
+
+    private RectF rect;
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        rect.set(10, 10, parentWidth - 20, parentHeight - 20);
+
         canvas.drawArc(rect, -90, sweepAngle, false, mStrokePaint);
         if (sweepAngle < 360 && flag == 0) {
             invalidate();
@@ -114,4 +103,14 @@ class Circle extends View {
         }
     }
 
+    private int parentWidth = 0;
+    private int parentHeight = 0;
+
+    public void setParentHeight(int parentHeight) {
+        this.parentHeight = parentHeight;
+    }
+
+    public void setParentWidth(int parentWidth) {
+        this.parentWidth = parentWidth;
+    }
 }

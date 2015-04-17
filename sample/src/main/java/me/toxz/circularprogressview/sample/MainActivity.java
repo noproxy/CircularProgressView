@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, "Starting download", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Starting recording", Toast.LENGTH_SHORT).show();
                             }
                         });
                         task.execute();
@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, "Download stopped", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "recording stopped", Toast.LENGTH_SHORT).show();
                             }
                         });
                         break;
@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, "Download complete", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "recording complete", Toast.LENGTH_SHORT).show();
                             }
                         });
                         break;

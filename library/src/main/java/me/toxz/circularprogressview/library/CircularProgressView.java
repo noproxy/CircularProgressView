@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.*;
 import android.widget.FrameLayout;
@@ -18,7 +18,6 @@ import android.widget.ImageView;
  * Created by Carlos on 2015/4/15.
  */
 public class CircularProgressView extends FrameLayout {
-    public RectF rect;
     private int mStokeColor = R.color.default_stroke_color;
     private Circle mCircleView;
     private ImageView mFillView;
@@ -27,14 +26,12 @@ public class CircularProgressView extends FrameLayout {
     private Drawable mProgressDrawable = getResources().getDrawable(R.drawable.default_progress_drawable);
     private Drawable mEndDrawable = getResources().getDrawable(R.drawable.default_end_drawable);
     private Paint mFillPaint;
-    private int pix = 0;
     private ImageView mCenterImage;
     private AnimationSet in, out;
     private ScaleAnimation newScaleIn;
     private Status mStatus = Status.CREATING;
     private OnStatusListener mListener;
     private int mProgress = 0;
-    private boolean isFirstClick = true;
 
     public CircularProgressView(Context context) {
         super(context);
@@ -60,16 +57,15 @@ public class CircularProgressView extends FrameLayout {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-        setResource(attrs, defStyle);
-        setDrawable();
-        setPaint();
-        setAnimation();
-        setMetrics();
-        setView();
+        initResource(attrs, defStyle);
+        initDrawable();
+        initPaint();
+        initAnimation();
+        initView();
 
     }
 
-    private void setResource(AttributeSet attrs, int defStyle) {
+    private void initResource(AttributeSet attrs, int defStyle) {
         // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.CircularProgressView, defStyle, 0);
@@ -98,7 +94,7 @@ public class CircularProgressView extends FrameLayout {
         a.recycle();
     }
 
-    private void setDrawable() {
+    private void initDrawable() {
         mCircleView = new Circle(getContext(), this);
         mCircleView.setClickable(false);
         mCenterImage = new ImageView(getContext());
@@ -115,14 +111,14 @@ public class CircularProgressView extends FrameLayout {
         });
     }
 
-    private void setPaint() {
+    private void initPaint() {
         // Set up Paint object
         mFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mFillPaint.setColor(getResources().getColor(mStokeColor));
         mFillPaint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
-    private void setAnimation() {
+    private void initAnimation() {
 
 
         ScaleAnimation scaleIn = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -159,6 +155,7 @@ public class CircularProgressView extends FrameLayout {
                 mCenterImage.setImageDrawable(mProgressDrawable);
                 mCenterImage.setVisibility(VISIBLE);
                 mCenterImage.startAnimation(in);
+                mCircleView.setVisibility(VISIBLE);
                 mStatus = Status.PROGRESS;
             }
 
@@ -190,40 +187,16 @@ public class CircularProgressView extends FrameLayout {
 
     }
 
-    private void setMetrics() {
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-        float scarea = width * height;
-        pix = (int) Math.sqrt(scarea * 0.0217);
-
-        float startX = (float) (pix * 0.05);
-        float endX = (float) (pix * 0.95);
-        float startY = (float) (pix * 0.05);
-        float endY = (float) (pix * 0.95);
-        rect = new RectF(startX, startY, endX, endY);
-    }
-
-    private void setView() {
+    private void initView() {
+        Log.i("CircularProgressView", "width: " + getWidth() + ", height: " + getHeight());
+        Log.i("CircularProgressView", "measureWidth: " + getMeasuredWidth() + ", measureHeight: " + getMeasuredHeight());
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(10, 10, 10, 10);
 
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        Bitmap bgCircleBitmap = Bitmap.createBitmap(pix, pix, conf);
-        Canvas bgCircleCanvas = new Canvas(bgCircleBitmap);
-        bgCircleCanvas.drawArc(rect, 0, 360, false, mFillPaint);
-        mFillView.setImageBitmap(bgCircleBitmap);
-
-
         mCenterImage.setImageDrawable(mStartDrawable);
         mStatus = Status.START;
-        mCircleView.setVisibility(INVISIBLE);
-        mFillView.setVisibility(INVISIBLE);
-
         this.addView(mCenterImage, lp);
-        this.addView(mFillView, lp);
-        this.addView(mCircleView, lp);
     }
 
 
@@ -253,9 +226,52 @@ public class CircularProgressView extends FrameLayout {
         }
     }
 
+    boolean isFirstDraw = true;
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        Log.i("CircularProgressView", "width: " + getWidth() + ", height: " + getHeight());
+        Log.i("CircularProgressView", "measureWidth: " + getMeasuredWidth() + ", measureHeight: " + getMeasuredHeight());
+        if (isFirstDraw) {
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            lp.setMargins(10, 10, 10, 10);
+            int width = getWidth(), height = getHeight();
+            int r = Math.min(width, height);
+
+            Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+            Bitmap bgCircleBitmap = Bitmap.createBitmap(r, r, conf);
+            Canvas bgCircleCanvas = new Canvas(bgCircleBitmap);
+
+            RectF rect0 = new RectF(0, 0, r, r);
+            bgCircleCanvas.drawArc(rect0, 0, 360, false, mFillPaint);
+            mFillView.setImageBitmap(bgCircleBitmap);
+
+            mCircleView.setVisibility(INVISIBLE);
+            mFillView.setVisibility(INVISIBLE);
+
+            mCircleView.setParentHeight(height);
+            mCircleView.setParentWidth(width);
+
+            this.addView(mFillView, 0, lp);
+            this.addView(mCircleView, lp);
+            isFirstDraw = false;
+        }
+        super.dispatchDraw(canvas);
+    }
+
     public void setProgress(int progress) {
         mProgress = progress;
         mCircleView.setProgress(progress);
+    }
+
+    public int getProgress() {
+        return mProgress;
     }
 
     void finalAnimation() {
