@@ -19,6 +19,5 @@
             app:progressDrawableMargins="0dp"
             app:endDrawableMargins="0dp"
             app:strokeSize="3dp"
-            >
-    </me.toxz.circularprogressview.library.CircularProgressView>
+            />
 </RelativeLayout>
