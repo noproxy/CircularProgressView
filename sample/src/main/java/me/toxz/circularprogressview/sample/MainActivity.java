@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final DownLoadSigTask task = new DownLoadSigTask();
+//        final DownLoadSigTask task = new DownLoadSigTask();
 
         mCircularProgressView = (CircularProgressView) findViewById(R.id.circularProgressView);
         mCircularProgressView.setOnStateListener(new CircularProgressView.OnStatusListener() {
@@ -30,10 +30,11 @@ public class MainActivity extends Activity {
                                 Toast.makeText(MainActivity.this, "Starting recording", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        task.execute();
+//                        task.execute();
+                        mCircularProgressView.setDuration(1200);
                         break;
                     case PROGRESS:
-                        task.cancel(true);
+//                        task.cancel(true);
                         mCircularProgressView.reset();
                         runOnUiThread(new Runnable() {
                             @Override
@@ -46,7 +47,8 @@ public class MainActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, "recording complete", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(MainActivity.this, "recording complete", Toast.LENGTH_SHORT).show();
+                                mCircularProgressView.resetSmoothly();
                             }
                         });
                         break;
@@ -89,22 +91,19 @@ public class MainActivity extends Activity {
 
         @Override
         protected String doInBackground(final String... args) {
-
+            long startTime = System.currentTimeMillis();
+            int progress;
             //Creating dummy task and updating progress
+            while ((progress = (int) ((System.currentTimeMillis() - startTime) / 12)) < 100) {
 
-            for (int i = 0; i <= 100; i++) {
+                publishProgress(progress);
                 try {
-                    Thread.sleep(50);
-
+                    Thread.sleep(1);
                 } catch (InterruptedException e) {
-
                     e.printStackTrace();
                 }
-                publishProgress(i);
-
             }
-
-
+            publishProgress(100);
             return null;
         }
 
