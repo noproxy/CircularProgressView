@@ -6,6 +6,8 @@ A custom progress view/button for Android. It combines button and progress view.
 
 **Video**: https://youtu.be/iPLf9Gc7b_Y
 
+![](https://github.com/a642500/CircularProgressView/blob/master/sample.gif)
+
 
 ## Usage:
 
