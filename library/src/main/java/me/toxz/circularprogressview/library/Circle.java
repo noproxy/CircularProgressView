@@ -48,39 +48,8 @@ class Circle extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.i("Circle", "width: " + getWidth() + ", height: " + getHeight());
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         Log.i("Circle", "widthMeasureSpec: " + widthMeasureSpec + ", heightMeasureSpec: " + heightMeasureSpec);
-
-        int desiredWidth = 0;
-        int desiredHeight = 0;
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        int width;
-        int height;
-
-
-        if (widthMode == MeasureSpec.EXACTLY) {
-            width = widthSize;
-        } else if (widthMode == MeasureSpec.AT_MOST) {
-            width = Math.min(desiredWidth, widthSize);
-        } else {
-            width = desiredWidth;
-        }
-
-
-        if (heightMode == MeasureSpec.EXACTLY) {
-            height = heightSize;
-        } else if (heightMode == MeasureSpec.AT_MOST) {
-            height = Math.min(desiredHeight, heightSize);
-        } else {
-            height = desiredHeight;
-        }
-
-
-        setMeasuredDimension(parentWidth, parentHeight);
     }
 
     private RectF rect;
@@ -88,7 +57,7 @@ class Circle extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        rect.set(10, 10, parentWidth - 20, parentHeight - 20);
+        rect.set(0 + mCircularProgressView.getStrokeSize() / 2, 0 + mCircularProgressView.getStrokeSize() / 2, getMeasuredWidth() - mCircularProgressView.getStrokeSize() / 2, getMeasuredHeight() - mCircularProgressView.getStrokeSize() / 2);
 
         canvas.drawArc(rect, -90, sweepAngle, false, mStrokePaint);
         if (sweepAngle < 360 && flag == 0) {
@@ -103,14 +72,5 @@ class Circle extends View {
         }
     }
 
-    private int parentWidth = 0;
-    private int parentHeight = 0;
 
-    public void setParentHeight(int parentHeight) {
-        this.parentHeight = parentHeight;
-    }
-
-    public void setParentWidth(int parentWidth) {
-        this.parentWidth = parentWidth;
-    }
 }

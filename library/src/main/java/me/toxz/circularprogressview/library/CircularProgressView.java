@@ -22,6 +22,7 @@ public class CircularProgressView extends FrameLayout {
     private Circle mCircleView;
     private ImageView mFillView;
     private float mStrokeSize = getResources().getDimension(R.dimen.default_stroke_size);
+    private int mDrawableMargins = (int) getResources().getDimension(R.dimen.default_drawable_margins);
     private Drawable mStartDrawable = getResources().getDrawable(R.drawable.default_start_drawable);
     private Drawable mProgressDrawable = getResources().getDrawable(R.drawable.default_progress_drawable);
     private Drawable mEndDrawable = getResources().getDrawable(R.drawable.default_end_drawable);
@@ -67,13 +68,12 @@ public class CircularProgressView extends FrameLayout {
 
     private void initResource(AttributeSet attrs, int defStyle) {
         // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.CircularProgressView, defStyle, 0);
-
+        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CircularProgressView, defStyle, 0);
         mStokeColor = a.getColor(R.styleable.CircularProgressView_strokeColor, mStokeColor);
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
         mStrokeSize = a.getDimension(R.styleable.CircularProgressView_strokeSize, mStrokeSize);
+        mDrawableMargins = (int) a.getDimension(R.styleable.CircularProgressView_drawableMargins, mDrawableMargins);
 
         if (a.hasValue(R.styleable.CircularProgressView_startDrawable)) {
             mStartDrawable = a.getDrawable(
@@ -192,7 +192,7 @@ public class CircularProgressView extends FrameLayout {
         Log.i("CircularProgressView", "measureWidth: " + getMeasuredWidth() + ", measureHeight: " + getMeasuredHeight());
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(10, 10, 10, 10);
+        lp.setMargins(mDrawableMargins, mDrawableMargins, mDrawableMargins, mDrawableMargins);
 
         mCenterImage.setImageDrawable(mStartDrawable);
         mStatus = Status.START;
@@ -236,11 +236,8 @@ public class CircularProgressView extends FrameLayout {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        Log.i("CircularProgressView", "width: " + getWidth() + ", height: " + getHeight());
-        Log.i("CircularProgressView", "measureWidth: " + getMeasuredWidth() + ", measureHeight: " + getMeasuredHeight());
         if (isFirstDraw) {
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            lp.setMargins(10, 10, 10, 10);
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             int width = getWidth(), height = getHeight();
             int r = Math.min(width, height);
 
@@ -254,9 +251,6 @@ public class CircularProgressView extends FrameLayout {
 
             mCircleView.setVisibility(INVISIBLE);
             mFillView.setVisibility(INVISIBLE);
-
-            mCircleView.setParentHeight(height);
-            mCircleView.setParentWidth(width);
 
             this.addView(mFillView, 0, lp);
             this.addView(mCircleView, lp);
