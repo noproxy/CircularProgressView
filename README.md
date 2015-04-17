@@ -2,9 +2,9 @@
 
 A custom progress view/button for Android. It combines button and progress view. You can custom button image resource by XML.
 
-----
+---
 
-video: https://youtu.be/iPLf9Gc7b_Y
+**Video**: https://youtu.be/iPLf9Gc7b_Y
 
 
 ## Usage:
@@ -13,7 +13,7 @@ video: https://youtu.be/iPLf9Gc7b_Y
 
 all these tag is optional.
 
-```
+```XML
     <me.toxz.circularprogressview.library.CircularProgressView
             android:id="@+id/circularProgressView"
             android:layout_width="64dp"
@@ -35,7 +35,7 @@ all these tag is optional.
 
 You should not to use ```CircularProgressView.setOnClickListener()```, but use ```CircularProgressView.setOnStateListener()``` instead.
 
-```
+```Java
 
 CircularProgressView circularProgressView = (CircularProgressView) findViewById(R.id.circularProgressView);
 circularProgressView.setOnStateListener(new CircularProgressView.OnStatusListener() {
@@ -65,4 +65,4 @@ This view doesn't support indeterminate mode, you must call ```CircularProgressV
 
 Gradle:
 
-```//i will upload to jcenter soon````
+```//i will upload to jcenter soon```
