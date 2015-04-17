@@ -3,9 +3,13 @@
     <declare-styleable name="CircularProgressView">
         <attr name="strokeSize" format="dimension"/>
         <attr name="strokeColor" format="color"/>
+
         <attr name="startDrawable" format="color|reference"/>
         <attr name="progressDrawable" format="color|reference"/>
         <attr name="endDrawable" format="color|reference"/>
-        <attr name="drawableMargins" format="dimension"/>
+
+        <attr name="startDrawableMargins" format="dimension"/>
+        <attr name="progressDrawableMargins" format="dimension"/>
+        <attr name="endDrawableMargins" format="dimension"/>
     </declare-styleable>
 </resources>

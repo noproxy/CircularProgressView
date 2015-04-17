@@ -15,6 +15,10 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_centerInParent="true"
+            app:startDrawableMargins="0dp"
+            app:progressDrawableMargins="12dp"
+            app:endDrawableMargins="0dp"
+            app:strokeSize="3dp"
             >
     </me.toxz.circularprogressview.library.CircularProgressView>
 </RelativeLayout>
