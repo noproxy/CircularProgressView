@@ -38,12 +38,12 @@ class Circle extends View {
         sweepAngle = (float) (progress * 3.6);
     }
 
-    private int flag = 0;
 
     public void reset() {
         //Resetting progress arc
         sweepAngle = 0;
-        flag = 1;
+        mDuration = 0;
+        startMillis = 0;
     }
 
     @Override
@@ -53,6 +53,7 @@ class Circle extends View {
     }
 
     private RectF rect;
+    private long startMillis;
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -60,16 +61,24 @@ class Circle extends View {
         rect.set(0 + mCircularProgressView.getStrokeSize() / 2, 0 + mCircularProgressView.getStrokeSize() / 2, getMeasuredWidth() - mCircularProgressView.getStrokeSize() / 2, getMeasuredHeight() - mCircularProgressView.getStrokeSize() / 2);
 
         canvas.drawArc(rect, -90, sweepAngle, false, mStrokePaint);
-        if (sweepAngle < 360 && flag == 0) {
-            invalidate();
-        } else if (flag == 1) {
-            sweepAngle = 0;
-            flag = 0;
+
+
+        if (sweepAngle < 360) {
+            if (mDuration > 0) {
+                if (startMillis <= 0) startMillis = System.currentTimeMillis();
+                sweepAngle = ((System.currentTimeMillis() - startMillis) / ((float) mDuration) * 360);
+            }
             invalidate();
         } else {
             sweepAngle = 0;
             mCircularProgressView.finalAnimation();
         }
+    }
+
+    private long mDuration = 0;
+
+    public void setDuration(long millis) {
+        mDuration = millis;
     }
 
 

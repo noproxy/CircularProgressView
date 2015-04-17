@@ -126,7 +126,7 @@ public class CircularProgressView extends FrameLayout {
 
 
         ScaleAnimation scaleIn = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        ScaleAnimation scaleOut = new ScaleAnimation(1.0f, 3.0f, 1.0f, 3.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        ScaleAnimation scaleOut = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         newScaleIn = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         scaleIn.setDuration(150);
         scaleOut.setDuration(150);
@@ -193,7 +193,54 @@ public class CircularProgressView extends FrameLayout {
             }
         });
 
+        allOut = new AnimationSet(true);
+        allOut.setInterpolator(new AccelerateDecelerateInterpolator());
+        allOut.addAnimation(fadeOut);
+        allOut.addAnimation(scaleOut);
+        allOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                wrapLayoutParams.setMargins(mStartDrawableMargins, mStartDrawableMargins, mStartDrawableMargins, mStartDrawableMargins);
+                mCenterImage.setLayoutParams(wrapLayoutParams);
+                mCenterImage.setImageDrawable(mStartDrawable);
+                mFillView.setVisibility(INVISIBLE);
+                CircularProgressView.this.startAnimation(allIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        allIn = new AnimationSet(true);
+        allIn.setInterpolator(new AccelerateDecelerateInterpolator());
+        allIn.addAnimation(scaleIn);
+        allIn.addAnimation(fadeIn);
+        allIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mStatus = Status.START;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
+
+    private AnimationSet allOut;
+    private AnimationSet allIn;
 
     FrameLayout.LayoutParams wrapLayoutParams;
 
@@ -231,18 +278,15 @@ public class CircularProgressView extends FrameLayout {
                 break;
             case END:
                 break;
+            case CREATING:
+                mStatus = Status.START;
+                break;
             default:
                 break;
         }
     }
 
     boolean isFirstDraw = true;
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-    }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
@@ -292,17 +336,32 @@ public class CircularProgressView extends FrameLayout {
 
     public void reset() {
         // Responsible for resetting the state of view when Stop is clicked
-        this.setProgress(0);
         mCircleView.reset();
+        mProgress = 0;
         mCircleView.setVisibility(View.INVISIBLE);
         wrapLayoutParams.setMargins(mStartDrawableMargins, mStartDrawableMargins, mStartDrawableMargins, mStartDrawableMargins);
         mCenterImage.setLayoutParams(wrapLayoutParams);
         mCenterImage.setImageDrawable(mStartDrawable);
-        mStatus = Status.START;
+        mFillView.setVisibility(INVISIBLE);
+        mCenterImage.clearAnimation();
+        mStatus = Status.CREATING;
+    }
+
+    public void resetSmoothly() {
+        mCircleView.reset();
+        mProgress = 0;
+        mCircleView.setVisibility(View.INVISIBLE);
+        mStatus = Status.CREATING;
+        mCenterImage.clearAnimation();
+        this.startAnimation(allOut);
 
     }
 
     public enum Status {CREATING, START, PROGRESS, END}
+
+    public void setDuration(long millis) {
+        mCircleView.setDuration(millis);
+    }
 
     public interface OnStatusListener {
         void onStatus(Status status);
