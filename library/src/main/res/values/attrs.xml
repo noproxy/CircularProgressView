@@ -12,5 +12,8 @@
         <attr name="cpv_startDrawableMargins" format="dimension"/>
         <attr name="cpv_progressDrawableMargins" format="dimension"/>
         <attr name="cpv_endDrawableMargins" format="dimension"/>
+
+        <attr name="cpv_clickAnimationDelayMillis" format="integer"/>
+        <attr name="cpv_startAnimationAuto" format="boolean"/>
     </declare-styleable>
 </resources>

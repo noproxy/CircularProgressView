@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -26,9 +27,11 @@ public class CircularProgressView extends RelativeLayout {
     private int mStartDrawableMargins = (int) getResources().getDimension(R.dimen.cpv_default_drawable_margins);
     private int mProgressDrawableMargins = mStartDrawableMargins;
     private int mEndDrawableMargins = mStartDrawableMargins;
+    private int mClickedAnimationDelay = 0;
     private Drawable mStartDrawable = getResources().getDrawable(R.drawable.cpv_default_start_drawable);
     private Drawable mProgressDrawable = getResources().getDrawable(R.drawable.cpv_default_progress_drawable);
     private Drawable mEndDrawable = getResources().getDrawable(R.drawable.cpv_default_end_drawable);
+    private boolean isStartAnimationAuto = true;
     private Paint mFillPaint;
     private ImageView mCenterImage;
     private AnimationSet in, out;
@@ -76,9 +79,13 @@ public class CircularProgressView extends RelativeLayout {
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
         mStrokeSize = a.getDimension(R.styleable.cpv_CircularProgressView_cpv_strokeSize, mStrokeSize);
+        mClickedAnimationDelay = a.getInt(R.styleable.cpv_CircularProgressView_cpv_clickAnimationDelayMillis, mClickedAnimationDelay);
+
         mStartDrawableMargins = (int) a.getDimension(R.styleable.cpv_CircularProgressView_cpv_startDrawableMargins, mStartDrawableMargins);
         mProgressDrawableMargins = (int) a.getDimension(R.styleable.cpv_CircularProgressView_cpv_progressDrawableMargins, mProgressDrawableMargins);
         mEndDrawableMargins = (int) a.getDimension(R.styleable.cpv_CircularProgressView_cpv_endDrawableMargins, mEndDrawableMargins);
+
+        isStartAnimationAuto = a.getBoolean(R.styleable.cpv_CircularProgressView_cpv_startAnimationAuto, isStartAnimationAuto);
 
         if (a.hasValue(R.styleable.cpv_CircularProgressView_cpv_startDrawable)) {
             mStartDrawable = a.getDrawable(
@@ -240,6 +247,18 @@ public class CircularProgressView extends RelativeLayout {
         });
     }
 
+    public void setStartAnimationAuto(boolean isStartAnimationAuto) {
+        this.isStartAnimationAuto = isStartAnimationAuto;
+    }
+
+    public void setStrokeSize(float strokeSize) {
+        this.mStrokeSize = strokeSize;
+    }
+
+    public void setClickedAnimationDelay(int clickedAnimationDelay) {
+        this.mClickedAnimationDelay = clickedAnimationDelay;
+    }
+
     private AnimationSet allOut;
     private AnimationSet allIn;
 
@@ -274,7 +293,9 @@ public class CircularProgressView extends RelativeLayout {
         }
         switch (mStatus) {
             case START:
-                startAnimation();
+                if (isStartAnimationAuto) {
+                    startAnimation();
+                }
                 break;
             case PROGRESS:
                 break;
@@ -319,6 +340,10 @@ public class CircularProgressView extends RelativeLayout {
         super.dispatchDraw(canvas);
     }
 
+    /**
+     * set progress percentage. If progress >=100 will cause animation to endDrawable.
+     * @param progress percentage, from 0 to 100.
+     */
     public void setProgress(int progress) {
         mProgress = progress;
         mCircleView.setProgress(progress);
@@ -334,12 +359,25 @@ public class CircularProgressView extends RelativeLayout {
         mFillView.startAnimation(newScaleIn);
     }
 
-    private void startAnimation() {
+    /**
+     * start animation, it must be called on ui thread.
+     * <p>
+     * By default, it will be called automatically when clicked. Only call it yourself if you has set cpv_startAnimationAuto="false".
+     */
+    public void startAnimation() {
         mFillView.setVisibility(INVISIBLE);
         mCircleView.setVisibility(INVISIBLE);
-        mCenterImage.startAnimation(out);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mCenterImage.startAnimation(out);
+            }
+        }, mClickedAnimationDelay);
     }
 
+    /**
+     * reset CircularProgressView to origin status.
+     */
     public void reset() {
         // Responsible for resetting the state of view when Stop is clicked
         mCircleView.reset();
@@ -353,6 +391,9 @@ public class CircularProgressView extends RelativeLayout {
         mStatus = Status.CREATING;
     }
 
+    /**
+     * reset CircularProgressView to origin status. This process has an animation.
+     */
     public void resetSmoothly() {
         mCircleView.reset();
         mProgress = 0;
@@ -365,6 +406,11 @@ public class CircularProgressView extends RelativeLayout {
 
     public enum Status {CREATING, START, PROGRESS, END}
 
+    /**
+     * set progress animation durations.
+     *
+     * @param millis the duration.
+     */
     public void setDuration(long millis) {
         mCircleView.setDuration(millis);
     }

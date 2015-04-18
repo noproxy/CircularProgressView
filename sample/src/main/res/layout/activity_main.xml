@@ -21,5 +21,6 @@
             app:cpv_progressDrawableMargins="0dp"
             app:cpv_endDrawableMargins="0dp"
             app:cpv_strokeSize="3dp"
+            app:cpv_clickAnimationDelayMillis="300"
             />
 </RelativeLayout>
