@@ -63,10 +63,10 @@ Call ```CircularProgressView.reset()``` to reset this view to origin state or ca
 
 This view doesn't support indeterminate mode, you must call ```CircularProgressView.setProgress(int progress)``` to update progress, or call ```CircularProgressView.setDuration(long millis)``` to set progress duration.
 
-By default, once it's clicked it will start animation from beginDrawable to progressDrawable. If you want to start animation manually, you can set ```app:cpv_startAnimationAuto=false``` in xml or call ```setStartAnimationAuto(boolean)```
+By default, once it's clicked it will start animation from beginDrawable to progressDrawable. If you want to start animation manually, you can set ```app:cpv_startAnimationAuto="false"``` in xml or call ```setStartAnimationAuto(boolean)```
  in java code.And then you can call ```startAnimation()``` at any time you want.
  
- And you can also set ```app:cpv_clickAnimationDelayMillis=100``` or call ```setClickedAnimationDelay(int)``` to set start animation delay time.
+ And you can also set ```app:cpv_clickAnimationDelayMillis="100"``` or call ```setClickedAnimationDelay(int)``` to set start animation delay time.
  
 ## Import to your project:
 
