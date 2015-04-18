@@ -341,8 +341,8 @@ public class CircularProgressView extends RelativeLayout {
     }
 
     /**
-     * set progress percentage. If progress >=100 will cause animation to endDrawable.
-     * @param progress percentage, from 0 to 100.
+     * set progress percentage. If progress is more than 100 will cause animation to endDrawable.
+     * @param progress percentage
      */
     public void setProgress(int progress) {
         mProgress = progress;
