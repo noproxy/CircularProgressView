@@ -18,16 +18,16 @@ import android.widget.ImageView;
  * Created by Carlos on 2015/4/15.
  */
 public class CircularProgressView extends FrameLayout {
-    private int mStokeColor = R.color.default_stroke_color;
+    private int mStokeColor = R.color.cpv_default_stroke_color;
     private Circle mCircleView;
     private ImageView mFillView;
-    private float mStrokeSize = getResources().getDimension(R.dimen.default_stroke_size);
-    private int mStartDrawableMargins = (int) getResources().getDimension(R.dimen.default_drawable_margins);
+    private float mStrokeSize = getResources().getDimension(R.dimen.cpv_default_stroke_size);
+    private int mStartDrawableMargins = (int) getResources().getDimension(R.dimen.cpv_default_drawable_margins);
     private int mProgressDrawableMargins = mStartDrawableMargins;
     private int mEndDrawableMargins = mStartDrawableMargins;
-    private Drawable mStartDrawable = getResources().getDrawable(R.drawable.default_start_drawable);
-    private Drawable mProgressDrawable = getResources().getDrawable(R.drawable.default_progress_drawable);
-    private Drawable mEndDrawable = getResources().getDrawable(R.drawable.default_end_drawable);
+    private Drawable mStartDrawable = getResources().getDrawable(R.drawable.cpv_default_start_drawable);
+    private Drawable mProgressDrawable = getResources().getDrawable(R.drawable.cpv_default_progress_drawable);
+    private Drawable mEndDrawable = getResources().getDrawable(R.drawable.cpv_default_end_drawable);
     private Paint mFillPaint;
     private ImageView mCenterImage;
     private AnimationSet in, out;
@@ -70,28 +70,28 @@ public class CircularProgressView extends FrameLayout {
 
     private void initResource(AttributeSet attrs, int defStyle) {
         // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CircularProgressView, defStyle, 0);
-        mStokeColor = a.getColor(R.styleable.CircularProgressView_strokeColor, mStokeColor);
+        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.cpv_CircularProgressView, defStyle, 0);
+        mStokeColor = a.getColor(R.styleable.cpv_CircularProgressView_cpv_strokeColor, mStokeColor);
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
-        mStrokeSize = a.getDimension(R.styleable.CircularProgressView_strokeSize, mStrokeSize);
-        mStartDrawableMargins = (int) a.getDimension(R.styleable.CircularProgressView_startDrawableMargins, mStartDrawableMargins);
-        mProgressDrawableMargins = (int) a.getDimension(R.styleable.CircularProgressView_progressDrawableMargins, mProgressDrawableMargins);
-        mEndDrawableMargins = (int) a.getDimension(R.styleable.CircularProgressView_endDrawableMargins, mEndDrawableMargins);
+        mStrokeSize = a.getDimension(R.styleable.cpv_CircularProgressView_cpv_strokeSize, mStrokeSize);
+        mStartDrawableMargins = (int) a.getDimension(R.styleable.cpv_CircularProgressView_cpv_startDrawableMargins, mStartDrawableMargins);
+        mProgressDrawableMargins = (int) a.getDimension(R.styleable.cpv_CircularProgressView_cpv_progressDrawableMargins, mProgressDrawableMargins);
+        mEndDrawableMargins = (int) a.getDimension(R.styleable.cpv_CircularProgressView_cpv_endDrawableMargins, mEndDrawableMargins);
 
-        if (a.hasValue(R.styleable.CircularProgressView_startDrawable)) {
+        if (a.hasValue(R.styleable.cpv_CircularProgressView_cpv_startDrawable)) {
             mStartDrawable = a.getDrawable(
-                    R.styleable.CircularProgressView_startDrawable);
+                    R.styleable.cpv_CircularProgressView_cpv_startDrawable);
             mStartDrawable.setCallback(this);
         }
-        if (a.hasValue(R.styleable.CircularProgressView_progressDrawable)) {
+        if (a.hasValue(R.styleable.cpv_CircularProgressView_cpv_progressDrawable)) {
             mProgressDrawable = a.getDrawable(
-                    R.styleable.CircularProgressView_progressDrawable);
+                    R.styleable.cpv_CircularProgressView_cpv_progressDrawable);
             mProgressDrawable.setCallback(this);
         }
-        if (a.hasValue(R.styleable.CircularProgressView_endDrawable)) {
+        if (a.hasValue(R.styleable.cpv_CircularProgressView_cpv_endDrawable)) {
             mEndDrawable = a.getDrawable(
-                    R.styleable.CircularProgressView_endDrawable);
+                    R.styleable.cpv_CircularProgressView_cpv_endDrawable);
             mEndDrawable.setCallback(this);
         }
 

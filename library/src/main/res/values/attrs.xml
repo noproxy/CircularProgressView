@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CircularProgressView">
-        <attr name="strokeSize" format="dimension"/>
-        <attr name="strokeColor" format="color"/>
 
-        <attr name="startDrawable" format="color|reference"/>
-        <attr name="progressDrawable" format="color|reference"/>
-        <attr name="endDrawable" format="color|reference"/>
+    <declare-styleable name="cpv_CircularProgressView">
+        <attr name="cpv_strokeSize" format="dimension"/>
+        <attr name="cpv_strokeColor" format="color"/>
 
-        <attr name="startDrawableMargins" format="dimension"/>
-        <attr name="progressDrawableMargins" format="dimension"/>
-        <attr name="endDrawableMargins" format="dimension"/>
+        <attr name="cpv_startDrawable" format="color|reference"/>
+        <attr name="cpv_progressDrawable" format="color|reference"/>
+        <attr name="cpv_endDrawable" format="color|reference"/>
+
+        <attr name="cpv_startDrawableMargins" format="dimension"/>
+        <attr name="cpv_progressDrawableMargins" format="dimension"/>
+        <attr name="cpv_endDrawableMargins" format="dimension"/>
     </declare-styleable>
 </resources>

@@ -15,9 +15,9 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_centerInParent="true"
-            app:startDrawableMargins="0dp"
-            app:progressDrawableMargins="0dp"
-            app:endDrawableMargins="0dp"
-            app:strokeSize="3dp"
+            app:cpv_startDrawableMargins="0dp"
+            app:cpv_progressDrawableMargins="0dp"
+            app:cpv_endDrawableMargins="0dp"
+            app:cpv_strokeSize="3dp"
             />
 </RelativeLayout>

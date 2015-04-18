@@ -16,13 +16,13 @@ repositories {
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1";
-    resourcePrefix "yyz__"
+    resourcePrefix "cpv_"
 
     defaultConfig {
         minSdkVersion 13
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0.0"
+        versionName PROJ_VERSION
     }
 
     compileOptions {
