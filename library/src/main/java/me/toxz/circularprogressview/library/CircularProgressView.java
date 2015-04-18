@@ -13,11 +13,12 @@ import android.view.View;
 import android.view.animation.*;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 /**
  * Created by Carlos on 2015/4/15.
  */
-public class CircularProgressView extends FrameLayout {
+public class CircularProgressView extends RelativeLayout {
     private int mStokeColor = R.color.cpv_default_stroke_color;
     private Circle mCircleView;
     private ImageView mFillView;
@@ -242,16 +243,17 @@ public class CircularProgressView extends FrameLayout {
     private AnimationSet allOut;
     private AnimationSet allIn;
 
-    FrameLayout.LayoutParams wrapLayoutParams;
+    RelativeLayout.LayoutParams wrapLayoutParams;
 
     private void initView() {
         Log.i("CircularProgressView", "width: " + getWidth() + ", height: " + getHeight());
         Log.i("CircularProgressView", "measureWidth: " + getMeasuredWidth() + ", measureHeight: " + getMeasuredHeight());
-        wrapLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT);
+        wrapLayoutParams = new RelativeLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        wrapLayoutParams.addRule(CENTER_IN_PARENT);
         wrapLayoutParams.setMargins(mStartDrawableMargins, mStartDrawableMargins, mStartDrawableMargins, mStartDrawableMargins);
 
         mCenterImage.setImageDrawable(mStartDrawable);
+        mCenterImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         mStatus = Status.START;
         this.addView(mCenterImage, wrapLayoutParams);
     }
@@ -291,15 +293,16 @@ public class CircularProgressView extends FrameLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         if (isFirstDraw) {
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            lp.addRule(CENTER_IN_PARENT);
             int width = getWidth(), height = getHeight();
-            int r = Math.min(width, height);
+            int l = Math.min(width, height);
 
             Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-            Bitmap bgCircleBitmap = Bitmap.createBitmap(r, r, conf);
+            Bitmap bgCircleBitmap = Bitmap.createBitmap(l, l, conf);
             Canvas bgCircleCanvas = new Canvas(bgCircleBitmap);
 
-            RectF rect0 = new RectF(0, 0, r, r);
+            RectF rect0 = new RectF(0, 0, l, l);
             bgCircleCanvas.drawArc(rect0, 0, 360, false, mFillPaint);
             mFillView.setImageBitmap(bgCircleBitmap);
 
@@ -307,6 +310,9 @@ public class CircularProgressView extends FrameLayout {
             mFillView.setVisibility(INVISIBLE);
 
             this.addView(mFillView, 0, lp);
+
+            lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            lp.addRule(CENTER_IN_PARENT);
             this.addView(mCircleView, lp);
             isFirstDraw = false;
         }

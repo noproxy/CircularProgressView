@@ -13,7 +13,7 @@ A custom progress view/button for Android. It combines button and progress view.
 
 ### XML:
 
-all these tag is optional.
+All these tag is optional. You needn't keep ratio of width and height. It use the min value of width and height as the circular progress's diameter.
 
 ```XML
     <me.toxz.circularprogressview.library.CircularProgressView
@@ -67,4 +67,15 @@ This view doesn't support indeterminate mode, you must call ```CircularProgressV
 
 Gradle:
 
-```//i will upload to jcenter soon```
+```gradle
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+
+dependencies {
+    compile 'me.toxz.circularprogressview:library:1.0.2'
+}
+```

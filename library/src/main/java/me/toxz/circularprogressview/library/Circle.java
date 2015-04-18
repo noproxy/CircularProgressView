@@ -58,7 +58,12 @@ class Circle extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        rect.set(0 + mCircularProgressView.getStrokeSize() / 2, 0 + mCircularProgressView.getStrokeSize() / 2, getMeasuredWidth() - mCircularProgressView.getStrokeSize() / 2, getMeasuredHeight() - mCircularProgressView.getStrokeSize() / 2);
+        int d = Math.min(getMeasuredWidth(), getMeasuredHeight());
+
+        rect.set((getMeasuredWidth() - d + mCircularProgressView.getStrokeSize()) / 2,
+                (getMeasuredHeight() - d + mCircularProgressView.getStrokeSize()) / 2,
+                (getMeasuredWidth() + d - mCircularProgressView.getStrokeSize()) / 2,
+                (getMeasuredHeight() + d - mCircularProgressView.getStrokeSize()) / 2);
 
         canvas.drawArc(rect, -90, sweepAngle, false, mStrokePaint);
 
