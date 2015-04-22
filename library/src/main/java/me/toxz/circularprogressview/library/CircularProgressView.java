@@ -375,6 +375,10 @@ public class CircularProgressView extends RelativeLayout {
         }, mClickedAnimationDelay);
     }
 
+    public Status getStatus() {
+        return mStatus;
+    }
+
     /**
      * reset CircularProgressView to origin status.
      */
