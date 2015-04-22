@@ -81,6 +81,6 @@ buildscript {
 
 
 dependencies {
-    compile 'me.toxz.circularprogressview:library:1.0.3'
+    compile 'me.toxz.circularprogressview:library:1.0.4'
 }
 ```
